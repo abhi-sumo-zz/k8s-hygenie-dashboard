@@ -1,0 +1,539 @@
+{
+    "type": "MewboardSyncDefinition",
+    "name": "Kubernetes - Hygiene Check",
+    "description": "",
+    "title": "Kubernetes - Hygiene Check",
+    "rootPanel": {
+        "id": null,
+        "key": "panele0157990ac99894e",
+        "title": "",
+        "visualSettings": "",
+        "keepVisualSettingsConsistentWithParent": true,
+        "panelType": "ContainerPanel",
+        "layout": {
+            "layoutType": "Grid",
+            "layoutStructures": [
+                {
+                    "key": "panelpane-06a7d1339e4f884d",
+                    "structure": "{\"height\":7,\"width\":6,\"x\":0,\"y\":0}"
+                },
+                {
+                    "key": "panelpane-3abe25d08f20184e",
+                    "structure": "{\"height\":7,\"width\":6,\"x\":18,\"y\":14}"
+                },
+                {
+                    "key": "panelpane-c4031aa484aaca49",
+                    "structure": "{\"height\":7,\"width\":6,\"x\":6,\"y\":0}"
+                },
+                {
+                    "key": "panelpane-e0d655b0b006094c",
+                    "structure": "{\"height\":7,\"width\":6,\"x\":0,\"y\":21}"
+                },
+                {
+                    "key": "panelpane-936d2f30af731b4d",
+                    "structure": "{\"height\":7,\"width\":6,\"x\":12,\"y\":0}"
+                },
+                {
+                    "key": "panelpane-7e5f826fafaa894e",
+                    "structure": "{\"height\":7,\"width\":6,\"x\":6,\"y\":14}"
+                },
+                {
+                    "key": "panelpane-beb31648bf14e94d",
+                    "structure": "{\"height\":7,\"width\":6,\"x\":12,\"y\":14}"
+                },
+                {
+                    "key": "panelpane-739b02218d40bb41",
+                    "structure": "{\"height\":7,\"width\":6,\"x\":0,\"y\":14}"
+                },
+                {
+                    "key": "panelpane-28e284bbbd675940",
+                    "structure": "{\"height\":7,\"width\":6,\"x\":0,\"y\":7}"
+                },
+                {
+                    "key": "panelpane-29beb4b081bbea49",
+                    "structure": "{\"height\":7,\"width\":6,\"x\":12,\"y\":7}"
+                },
+                {
+                    "key": "panelpane-ea4dea5b83818840",
+                    "structure": "{\"height\":7,\"width\":12,\"x\":12,\"y\":21}"
+                },
+                {
+                    "key": "panelpane-32046f25a2808a4b",
+                    "structure": "{\"height\":7,\"width\":6,\"x\":6,\"y\":7}"
+                },
+                {
+                    "key": "panelpane-705eaa3eba163844",
+                    "structure": "{\"height\":7,\"width\":6,\"x\":18,\"y\":7}"
+                },
+                {
+                    "key": "panelpane-32f8e307a51b4a4b",
+                    "structure": "{\"height\":7,\"width\":6,\"x\":18,\"y\":0}"
+                },
+                {
+                    "key": "panelpane-bdb8342d863eab40",
+                    "structure": "{\"height\":7,\"width\":6,\"x\":6,\"y\":21}"
+                }
+            ]
+        },
+        "panels": [
+            {
+                "id": null,
+                "key": "panelpane-06a7d1339e4f884d",
+                "title": "Remaining Pod Capacity",
+                "visualSettings": "{\"general\":{\"type\":\"svp\"},\"svp\":{\"thresholds\":[{\"from\":0,\"to\":10,\"color\":\"#ff5d5d\"},{\"from\":10,\"to\":20,\"color\":\"yellow\"},{\"from\":20,\"to\":null,\"color\":\"#98eca9\"}],\"useBackgroundColor\":true,\"option\":\"Latest\",\"gauge\":{\"show\":false,\"min\":0,\"max\":100},\"sparkline\":{\"show\":false,\"color\":\"#222D3B\"},\"label\":\"Pods\"}}",
+                "keepVisualSettingsConsistentWithParent": true,
+                "panelType": "SumoSearchPanel",
+                "queries": [
+                    {
+                        "queryString": "metric=kube_node_status_allocatable resource=pods cluster={{cluster}} | sum",
+                        "queryType": "Metrics",
+                        "queryKey": "A",
+                        "metricsQueryMode": "basic",
+                        "metricsQueryData": {
+                            "metric": "kube_node_status_allocatable",
+                            "aggregationType": "Sum",
+                            "groupBy": "",
+                            "filters": [
+                                {
+                                    "key": "resource",
+                                    "value": "pods"
+                                },
+                                {
+                                    "key": "cluster",
+                                    "value": "{{cluster}}"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "description": "",
+                "timeRange": null,
+                "timerange": null,
+                "coloringRules": null,
+                "linkedDashboardAccessKeys": []
+            },
+            {
+                "id": null,
+                "key": "panelpane-3abe25d08f20184e",
+                "title": "Container Restarts",
+                "visualSettings": "{\"general\":{\"type\":\"svp\"},\"svp\":{\"option\":\"Maximum\",\"thresholds\":[{\"from\":-1,\"to\":5,\"color\":\"#98eca9\"},{\"from\":5,\"to\":10,\"color\":\"yellow\"},{\"from\":10,\"to\":null,\"color\":\"red\"}],\"useBackgroundColor\":true,\"noDataString\":\"0\"}}",
+                "keepVisualSettingsConsistentWithParent": true,
+                "panelType": "SumoSearchPanel",
+                "queries": [
+                    {
+                        "queryString": "metric=kube_pod_container_status_restarts_total cluster={{cluster}} | quantize 1m | delta | max | eval round(_value)",
+                        "queryType": "Metrics",
+                        "queryKey": "A",
+                        "metricsQueryMode": "advanced",
+                        "metricsQueryData": null
+                    }
+                ],
+                "description": "",
+                "timeRange": null,
+                "timerange": null,
+                "coloringRules": null,
+                "linkedDashboardAccessKeys": []
+            },
+            {
+                "id": null,
+                "key": "panelpane-c4031aa484aaca49",
+                "title": "Nodes Not Ready",
+                "visualSettings": "{\"general\":{\"type\":\"svp\"},\"svp\":{\"option\":\"Latest\",\"thresholds\":[{\"from\":-1,\"to\":2,\"color\":\"#98eca9\"},{\"from\":2,\"to\":5,\"color\":\"yellow\"},{\"from\":5,\"to\":null,\"color\":\"red\"}],\"useBackgroundColor\":true,\"noDataString\":\"0\"}}",
+                "keepVisualSettingsConsistentWithParent": true,
+                "panelType": "SumoSearchPanel",
+                "queries": [
+                    {
+                        "queryString": "metric=kube_node_status_condition cluster={{cluster}} !condition=ready status=\"true\"  | sum",
+                        "queryType": "Metrics",
+                        "queryKey": "A",
+                        "metricsQueryMode": "advanced",
+                        "metricsQueryData": null
+                    }
+                ],
+                "description": "",
+                "timeRange": null,
+                "timerange": null,
+                "coloringRules": null,
+                "linkedDashboardAccessKeys": []
+            },
+            {
+                "id": null,
+                "key": "panelpane-e0d655b0b006094c",
+                "title": "Pods without Limits",
+                "visualSettings": "{\"general\":{\"type\":\"svp\"},\"hiddenQueryKeys\":[],\"svp\":{\"option\":\"Maximum\",\"label\":\"%\",\"thresholds\":[{\"from\":0,\"to\":10,\"color\":\"green\"},{\"from\":10,\"to\":20,\"color\":\"yellow\"},{\"from\":20,\"to\":null,\"color\":\"#ff0000\"}],\"useBackgroundColor\":true}}",
+                "keepVisualSettingsConsistentWithParent": true,
+                "panelType": "SumoSearchPanel",
+                "queries": [
+                    {
+                        "queryString": "metric=kube_pod_container_resource_limits resource=cpu cluster={{cluster}} | quantize 1m | count",
+                        "queryType": "Metrics",
+                        "queryKey": "A",
+                        "metricsQueryMode": "advanced",
+                        "metricsQueryData": null
+                    },
+                    {
+                        "queryString": "metric=kubelet_running_pod_count cluster={{cluster}} | quantize 1m | sum",
+                        "queryType": "Metrics",
+                        "queryKey": "B",
+                        "metricsQueryMode": "advanced",
+                        "metricsQueryData": null
+                    },
+                    {
+                        "queryString": "((#B - #A) / (#B)) * 100",
+                        "queryType": "Metrics",
+                        "queryKey": "C",
+                        "metricsQueryMode": "advanced",
+                        "metricsQueryData": null
+                    }
+                ],
+                "description": "",
+                "timeRange": null,
+                "timerange": null,
+                "coloringRules": null,
+                "linkedDashboardAccessKeys": []
+            },
+            {
+                "id": null,
+                "key": "panelpane-936d2f30af731b4d",
+                "title": "% of CPUs Usage",
+                "visualSettings": "{\"general\":{\"type\":\"svp\"},\"hiddenQueryKeys\":[\"A\",\"C\",\"B\"],\"svp\":{\"option\":\"Maximum\",\"label\":\"% of CPUs\",\"thresholds\":[{\"from\":60,\"to\":80,\"color\":\"#98eca9\"},{\"from\":0,\"to\":60,\"color\":\"yellow\"},{\"from\":80,\"to\":null,\"color\":\"red\"}],\"useBackgroundColor\":true}}",
+                "keepVisualSettingsConsistentWithParent": true,
+                "panelType": "SumoSearchPanel",
+                "queries": [
+                    {
+                        "queryString": "metric=node:cluster_cpu_utilisation:ratio cluster={{cluster}} | avg | eval _value * 100",
+                        "queryType": "Metrics",
+                        "queryKey": "D",
+                        "metricsQueryMode": "advanced",
+                        "metricsQueryData": null
+                    }
+                ],
+                "description": "",
+                "timeRange": null,
+                "timerange": null,
+                "coloringRules": null,
+                "linkedDashboardAccessKeys": []
+            },
+            {
+                "id": null,
+                "key": "panelpane-7e5f826fafaa894e",
+                "title": "Pods that Failed to Create",
+                "visualSettings": "{\"general\":{\"type\":\"svp\"},\"svp\":{\"label\":\"Pods\",\"option\":\"Maximum\",\"thresholds\":[{\"from\":0,\"to\":1,\"color\":\"green\"},{\"from\":null,\"to\":null,\"color\":\"yellow\"},{\"from\":1,\"to\":null,\"color\":\"red\"}],\"useBackgroundColor\":true}}",
+                "keepVisualSettingsConsistentWithParent": true,
+                "panelType": "SumoSearchPanel",
+                "queries": [
+                    {
+                        "queryString": "metric=kube_pod_container_status_waiting_reason cluster={{cluster}} !reason=containercreating | sum",
+                        "queryType": "Metrics",
+                        "queryKey": "A",
+                        "metricsQueryMode": "advanced",
+                        "metricsQueryData": null
+                    }
+                ],
+                "description": "",
+                "timeRange": null,
+                "timerange": null,
+                "coloringRules": null,
+                "linkedDashboardAccessKeys": []
+            },
+            {
+                "id": null,
+                "key": "panelpane-beb31648bf14e94d",
+                "title": "Terminated Pods",
+                "visualSettings": "{\"general\":{\"type\":\"svp\"},\"svp\":{\"option\":\"Maximum\",\"thresholds\":[{\"from\":0,\"to\":1,\"color\":\"green\"},{\"from\":null,\"to\":null,\"color\":\"yellow\"},{\"from\":1,\"to\":null,\"color\":\"red\"}],\"useBackgroundColor\":true,\"label\":\"Pods\"}}",
+                "keepVisualSettingsConsistentWithParent": true,
+                "panelType": "SumoSearchPanel",
+                "queries": [
+                    {
+                        "queryString": "metric=kube_pod_container_status_terminated_reason cluster={{cluster}} !reason=completed | sum",
+                        "queryType": "Metrics",
+                        "queryKey": "A",
+                        "metricsQueryMode": "advanced",
+                        "metricsQueryData": null
+                    }
+                ],
+                "description": "",
+                "timeRange": null,
+                "timerange": null,
+                "coloringRules": null,
+                "linkedDashboardAccessKeys": []
+            },
+            {
+                "id": null,
+                "key": "panelpane-739b02218d40bb41",
+                "title": "Unscheduleable Pods",
+                "visualSettings": "{\"general\":{\"type\":\"svp\"},\"svp\":{\"option\":\"Maximum\",\"label\":\"Pods\",\"thresholds\":[{\"from\":0,\"to\":1,\"color\":\"#98eca9\"},{\"from\":null,\"to\":null,\"color\":\"yellow\"},{\"from\":1,\"to\":null,\"color\":\"red\"}],\"useBackgroundColor\":true,\"noDataString\":\"0\"}}",
+                "keepVisualSettingsConsistentWithParent": true,
+                "panelType": "SumoSearchPanel",
+                "queries": [
+                    {
+                        "queryString": "metric=kube_pod_status_phase (phase=pending or phase=unknown or phase=failed)  cluster={{cluster}} | sum",
+                        "queryType": "Metrics",
+                        "queryKey": "A",
+                        "metricsQueryMode": "advanced",
+                        "metricsQueryData": null
+                    }
+                ],
+                "description": "",
+                "timeRange": null,
+                "timerange": null,
+                "coloringRules": null,
+                "linkedDashboardAccessKeys": []
+            },
+            {
+                "id": null,
+                "key": "panelpane-28e284bbbd675940",
+                "title": "% CPUs Requested",
+                "visualSettings": "{\"general\":{\"type\":\"svp\"},\"svp\":{\"option\":\"Maximum\",\"label\":\"% CPUs Requested\",\"thresholds\":[{\"from\":50,\"to\":70,\"color\":\"green\"},{\"from\":0,\"to\":50,\"color\":\"yellow\"},{\"from\":70,\"to\":100,\"color\":\"red\"}],\"useBackgroundColor\":true}}",
+                "keepVisualSettingsConsistentWithParent": true,
+                "panelType": "SumoSearchPanel",
+                "queries": [
+                    {
+                        "queryString": "metric=kube_pod_container_resource_requests cluster={{cluster}} resource=cpu | quantize 1m | sum",
+                        "queryType": "Metrics",
+                        "queryKey": "A",
+                        "metricsQueryMode": "advanced",
+                        "metricsQueryData": null
+                    },
+                    {
+                        "queryString": "metric=node:node_num_cpu:sum cluster={{cluster}} | quantize 1m | sum",
+                        "queryType": "Metrics",
+                        "queryKey": "B",
+                        "metricsQueryMode": "advanced",
+                        "metricsQueryData": null
+                    },
+                    {
+                        "queryString": "#A / #B * 100",
+                        "queryType": "Metrics",
+                        "queryKey": "C",
+                        "metricsQueryMode": "advanced",
+                        "metricsQueryData": null
+                    }
+                ],
+                "description": "",
+                "timeRange": null,
+                "timerange": null,
+                "coloringRules": null,
+                "linkedDashboardAccessKeys": []
+            },
+            {
+                "id": null,
+                "key": "panelpane-29beb4b081bbea49",
+                "title": "% of Mem Requested",
+                "visualSettings": "{\"general\":{\"type\":\"svp\"},\"svp\":{\"label\":\"% MEM Requested\",\"thresholds\":[{\"from\":50,\"to\":70,\"color\":\"green\"},{\"from\":0,\"to\":50,\"color\":\"yellow\"},{\"from\":70,\"to\":null,\"color\":\"red\"}],\"useBackgroundColor\":true,\"option\":\"Maximum\"}}",
+                "keepVisualSettingsConsistentWithParent": true,
+                "panelType": "SumoSearchPanel",
+                "queries": [
+                    {
+                        "queryString": "metric=kube_pod_container_resource_requests cluster={{cluster}} resource=memory | quantize 1m | sum",
+                        "queryType": "Metrics",
+                        "queryKey": "A",
+                        "metricsQueryMode": "advanced",
+                        "metricsQueryData": null
+                    },
+                    {
+                        "queryString": "metric=node:node_memory_bytes_total:sum cluster={{cluster}} | quantize 1m | sum",
+                        "queryType": "Metrics",
+                        "queryKey": "B",
+                        "metricsQueryMode": "advanced",
+                        "metricsQueryData": null
+                    },
+                    {
+                        "queryString": "#A / #B * 100",
+                        "queryType": "Metrics",
+                        "queryKey": "C",
+                        "metricsQueryMode": "advanced",
+                        "metricsQueryData": null
+                    }
+                ],
+                "description": "",
+                "timeRange": null,
+                "timerange": null,
+                "coloringRules": null,
+                "linkedDashboardAccessKeys": []
+            },
+            {
+                "id": null,
+                "key": "panelpane-ea4dea5b83818840",
+                "title": "Error by Pod",
+                "visualSettings": "{\"general\":{\"mode\":\"distribution\",\"type\":\"table\"}}",
+                "keepVisualSettingsConsistentWithParent": true,
+                "panelType": "SumoSearchPanel",
+                "queries": [
+                    {
+                        "queryString": "error pod=*\n| count by pod\n| sort _count desc",
+                        "queryType": "Logs",
+                        "queryKey": "A",
+                        "metricsQueryMode": null,
+                        "metricsQueryData": null
+                    }
+                ],
+                "description": "",
+                "timeRange": null,
+                "timerange": null,
+                "coloringRules": null,
+                "linkedDashboardAccessKeys": []
+            },
+            {
+                "id": null,
+                "key": "panelpane-32046f25a2808a4b",
+                "title": "Max % of CPUs Burst-able",
+                "visualSettings": "{\"general\":{\"type\":\"svp\"},\"svp\":{\"option\":\"Maximum\",\"label\":\"Max % of CPUs Burst-able\",\"thresholds\":[{\"from\":50,\"to\":90,\"color\":\"#98eca9\"},{\"from\":0,\"to\":50,\"color\":\"yellow\"},{\"from\":90,\"to\":100,\"color\":\"red\"}],\"useBackgroundColor\":true}}",
+                "keepVisualSettingsConsistentWithParent": true,
+                "panelType": "SumoSearchPanel",
+                "queries": [
+                    {
+                        "queryString": "metric=kube_pod_container_resource_limits cluster={{cluster}} resource=cpu | quantize 1m | sum",
+                        "queryType": "Metrics",
+                        "queryKey": "A",
+                        "metricsQueryMode": "advanced",
+                        "metricsQueryData": null
+                    },
+                    {
+                        "queryString": "metric=node:node_num_cpu:sum cluster={{cluster}} | quantize 1m | sum",
+                        "queryType": "Metrics",
+                        "queryKey": "B",
+                        "metricsQueryMode": "advanced",
+                        "metricsQueryData": null
+                    },
+                    {
+                        "queryString": "#A / #B * 100",
+                        "queryType": "Metrics",
+                        "queryKey": "C",
+                        "metricsQueryMode": "advanced",
+                        "metricsQueryData": null
+                    }
+                ],
+                "description": "",
+                "timeRange": null,
+                "timerange": null,
+                "coloringRules": null,
+                "linkedDashboardAccessKeys": []
+            },
+            {
+                "id": null,
+                "key": "panelpane-705eaa3eba163844",
+                "title": "Max % of Mem Burst-able",
+                "visualSettings": "{\"general\":{\"type\":\"svp\"},\"svp\":{\"label\":\"Max % MEM Burst-able\",\"thresholds\":[{\"from\":50,\"to\":90,\"color\":\"#98eca9\"},{\"from\":0,\"to\":50,\"color\":\"yellow\"},{\"from\":90,\"to\":null,\"color\":\"red\"}],\"useBackgroundColor\":true,\"option\":\"Maximum\"}}",
+                "keepVisualSettingsConsistentWithParent": true,
+                "panelType": "SumoSearchPanel",
+                "queries": [
+                    {
+                        "queryString": "metric=kube_pod_container_resource_limits cluster={{cluster}} resource=memory | quantize 1m | sum",
+                        "queryType": "Metrics",
+                        "queryKey": "A",
+                        "metricsQueryMode": "advanced",
+                        "metricsQueryData": null
+                    },
+                    {
+                        "queryString": "metric=node:node_memory_bytes_total:sum cluster={{cluster}} | quantize 1m | sum",
+                        "queryType": "Metrics",
+                        "queryKey": "B",
+                        "metricsQueryMode": "advanced",
+                        "metricsQueryData": null
+                    },
+                    {
+                        "queryString": "#A / #B * 100",
+                        "queryType": "Metrics",
+                        "queryKey": "C",
+                        "metricsQueryMode": "advanced",
+                        "metricsQueryData": null
+                    }
+                ],
+                "description": "",
+                "timeRange": null,
+                "timerange": null,
+                "coloringRules": null,
+                "linkedDashboardAccessKeys": []
+            },
+            {
+                "id": null,
+                "key": "panelpane-32f8e307a51b4a4b",
+                "title": "% Mem Used",
+                "visualSettings": "{\"general\":{\"type\":\"svp\"},\"svp\":{\"label\":\"%\",\"thresholds\":[{\"from\":50,\"to\":80,\"color\":\"green\"},{\"from\":0,\"to\":50,\"color\":\"yellow\"},{\"from\":80,\"to\":null,\"color\":\"red\"}],\"useBackgroundColor\":true,\"option\":\"Maximum\"}}",
+                "keepVisualSettingsConsistentWithParent": true,
+                "panelType": "SumoSearchPanel",
+                "queries": [
+                    {
+                        "queryString": "metric=node:cluster_memory_utilisation:ratio cluster={{cluster}} | avg | eval _value * 100",
+                        "queryType": "Metrics",
+                        "queryKey": "A",
+                        "metricsQueryMode": "advanced",
+                        "metricsQueryData": null
+                    }
+                ],
+                "description": "",
+                "timeRange": null,
+                "timerange": null,
+                "coloringRules": null,
+                "linkedDashboardAccessKeys": []
+            },
+            {
+                "id": null,
+                "key": "panelpane-bdb8342d863eab40",
+                "title": "Pods without Requests",
+                "visualSettings": "{\"general\":{\"type\":\"svp\"},\"hiddenQueryKeys\":[],\"svp\":{\"option\":\"Maximum\",\"label\":\"%\",\"thresholds\":[{\"from\":0,\"to\":10,\"color\":\"green\"},{\"from\":10,\"to\":20,\"color\":\"yellow\"},{\"from\":20,\"to\":null,\"color\":\"#ff0000\"}],\"useBackgroundColor\":true}}",
+                "keepVisualSettingsConsistentWithParent": true,
+                "panelType": "SumoSearchPanel",
+                "queries": [
+                    {
+                        "queryString": "metric=kube_pod_container_resource_requests resource=cpu cluster={{cluster}} | quantize 1m | count",
+                        "queryType": "Metrics",
+                        "queryKey": "A",
+                        "metricsQueryMode": "advanced",
+                        "metricsQueryData": null
+                    },
+                    {
+                        "queryString": "metric=kubelet_running_pod_count cluster={{cluster}} | quantize 1m | sum",
+                        "queryType": "Metrics",
+                        "queryKey": "B",
+                        "metricsQueryMode": "advanced",
+                        "metricsQueryData": null
+                    },
+                    {
+                        "queryString": "((#B - #A) / (#B)) * 100",
+                        "queryType": "Metrics",
+                        "queryKey": "C",
+                        "metricsQueryMode": "advanced",
+                        "metricsQueryData": null
+                    }
+                ],
+                "description": "",
+                "timeRange": null,
+                "timerange": null,
+                "coloringRules": null,
+                "linkedDashboardAccessKeys": []
+            }
+        ],
+        "variables": [
+            {
+                "id": null,
+                "name": "cluster",
+                "displayName": null,
+                "defaultValue": null,
+                "sourceDefinition": {
+                    "variableSourceType": "MagellanMetadataVariableSourceDefinition",
+                    "filter": "_origin=\"kubernetes\"",
+                    "key": "cluster"
+                },
+                "allowMultiSelect": false,
+                "includeAllOption": true,
+                "hideFromUI": false
+            }
+        ],
+        "coloringRules": []
+    },
+    "theme": "light",
+    "topologyLabelMap": {
+        "data": {}
+    },
+    "refreshInterval": 0,
+    "timeRange": {
+        "type": "BeginBoundedTimeRange",
+        "from": {
+            "type": "RelativeTimeRangeBoundary",
+            "relativeTime": "-15m"
+        },
+        "to": null
+    }
+}
